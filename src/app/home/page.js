@@ -1,5 +1,5 @@
 'use client'; // Needed to use client-side logic like useEffect
-
+// home/page.js
 import { useEffect, useState } from 'react';
 
 export default function Home() {
@@ -17,7 +17,6 @@ export default function Home() {
             const user = tg.initDataUnsafe?.user;
             if (user && user.username) {
                 setUsername(user.username);
-                console.log('user.first_name')
             } else {
                 setUsername('Guest');
             }

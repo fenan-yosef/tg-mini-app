@@ -16,6 +16,9 @@ export default function RootLayout({ children }) {
   console.log(currentPath)
   return (
     <html lang="en">
+      <head>
+        <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
+      </head>
       <body className={styles.body}>
         <main className="flex-grow">{children}</main>
         <footer className={styles.footer}>
