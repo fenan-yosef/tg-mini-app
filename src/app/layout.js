@@ -13,7 +13,6 @@ export default function RootLayout({ children }) {
 
   // Helper function to determine if a link is active
   const isActive = (path) => currentPath === path;
-  console.log('llllllll')
   console.log(currentPath)
   return (
     <html lang="en">

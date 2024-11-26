@@ -13,9 +13,11 @@ export default function Home() {
             tg.ready();
 
             // Fetch the Telegram user's username
+
             const user = tg.initDataUnsafe?.user;
             if (user && user.username) {
-                setUsername(user.first_name);
+                setUsername(user.username);
+                console.log('user.first_name')
             } else {
                 setUsername('Guest');
             }
