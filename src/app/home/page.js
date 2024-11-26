@@ -16,7 +16,7 @@ export default function Home() {
             const user = tg.initDataUnsafe?.user;
             setUsername('or')
             if (user && user.username) {
-                setUsername(user.first_name);
+                setUsername(user.username);
             } else {
                 setUsername('Guest');
             }
