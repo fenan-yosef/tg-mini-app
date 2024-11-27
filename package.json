@@ -12,9 +12,11 @@
     "@fortawesome/fontawesome-svg-core": "^6.7.1",
     "@fortawesome/free-solid-svg-icons": "^6.7.1",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "framer-motion": "^11.11.17",
     "next": "14.2.18",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "recharts": "^2.13.3"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
