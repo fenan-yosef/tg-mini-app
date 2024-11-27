@@ -1,6 +1,6 @@
 'use client'; // Needed to use client-side logic like useEffect
 
-import { faBell, faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faFire, faHourglassHalf, faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 
@@ -35,7 +35,6 @@ export default function Home() {
       if (user) {
         setUsername(user.first_name || 'Guest');
         setPhotoUrl(user.photo_url || './images/placeholder-profile.jpg'); // Use placeholder if no photo
-        console.log(photoUrl)
       } else {
         setUsername('Guest');
       }
@@ -43,13 +42,13 @@ export default function Home() {
   }, []);
 
   return (
-    <main className='blur-gradient' style={{ textAlign: 'center', marginTop: '-5px', minHeight: '100vh' }}>
+    <main className='blur-gradient' style={{ textAlign: 'center', marginTop: '-5px', marginBottom: '130px', minHeight: '100vh' }}>
       <div className="header flex justify-between items-center p-4">
         <div className='flex'>
           <img
             src={photoUrl}
             alt="User Avatar"
-            className="w-12 h-12 rounded-full"
+            className="pl-3 w-12 h-12 rounded-full"
           />
           <div>
             <h4 className='text-sm font-thin'>{greeting},</h4>
@@ -77,19 +76,89 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="task-card bg-gray-400 p-4 rounded-lg shadow-md mx-4 mt-2 mb-3">
-        <span className="tag bg-red-500 text-white px-2 py-1 rounded-full">Urgent</span>
-        <h4 className="font-bold">Market research for Zulla project</h4>
-        <p className="text-sm">28h</p>
-        <div className="avatars flex items-center">
-          {/* Replace with dynamic participant avatars */}
-          <img src="./images/placeholder-profile.jpg" className="w-6 h-6 rounded-full" />
-          <img src="./images/placeholder-profile.jpg" className="w-6 h-6 rounded-full" />
+      <div className="masonry-container columns-2 gap-4 px-4 ">
+        <div className="task-card text-left break-inside bg-white text-black p-4 rounded-lg shadow-md mb-4">
+          <span className="tag px-2 pink-bg py-1 rounded-full text-xs font-bold">
+            <FontAwesomeIcon icon={faFire} className='mx-1' />
+            Urgent
+          </span>
+          <div className='pb-10 mt-5'>
+            <h4 className="font-bold ">Market research for Zulla project</h4>
+            <p className="text-sm">28h</p>
+          </div>
+          <div className='flex justify-between'>
+            <div className="avatars flex items-center">
+              <img src={photoUrl} className="w-6 h-6 rounded-full" />
+              <img src={photoUrl} className="w-6 h-6 rounded-full" />
+            </div>
+            <button className="play-button text-yellow-300 mt-2">
+              <FontAwesomeIcon icon={faPlay} size='lg' />
+            </button>
+          </div>
         </div>
-        <button className="play-button text-yellow-300">
-          <FontAwesomeIcon icon={faPlay} />
-        </button>
+
+        <div className="task-card text-left break-inside blue-bg p-4 rounded-lg shadow-md mb-4">
+          <span className="tag px-2 yellow-bg py-1 text-black rounded-full text-xs font-bold">
+            <FontAwesomeIcon icon={faHourglassHalf} className='mx-1' />
+            Urgent
+          </span>
+          <h4 className="font-bold my-2">Monthly report</h4>
+          <p className="text-sm my-2">2h</p>
+          <div className='flex justify-between'>
+            <div className="avatars flex items-center">
+              <img src={photoUrl} className="w-6 h-6 rounded-full" />
+              <img src={photoUrl} className="w-6 h-6 rounded-full" />
+            </div>
+            <button className="play-button text-yellow-300 mt-2">
+              <FontAwesomeIcon icon={faPlay} />
+            </button>
+          </div>
+        </div>
+
+        <div className="task-card text-left break-inside blue-bg p-4 rounded-lg shadow-md mb-4">
+          <span className="tag px-2 yellow-bg py-1 text-black rounded-full text-xs font-bold">
+            <FontAwesomeIcon icon={faHourglassHalf} className='mx-1' />
+            Urgent
+          </span>
+          <h4 className="font-bold my-2">Monthly report</h4>
+          <p className="text-sm my-2">2h</p>
+          <div className='flex justify-between'>
+            <div className="avatars flex items-center">
+              <img src={photoUrl} className="w-6 h-6 rounded-full" />
+              <img src={photoUrl} className="w-6 h-6 rounded-full" />
+            </div>
+            <button className="play-button text-yellow-300 mt-2">
+              <FontAwesomeIcon icon={faPlay} />
+            </button>
+          </div>
+        </div>
+
+        <div className="task-card liquid-marble-bg text-left break-inside  p-4 rounded-lg shadow-md mb-4">
+          <span className="tag px-2 bg-blue-950 py-1 text-white rounded-full text-xs font-bold">
+            <FontAwesomeIcon icon={faPause} className='mx-1' />
+            On pause
+          </span>
+          <h4 className="font-bold my-2">Monthly report</h4>
+          <p className="text-sm my-2">2h</p>
+          <div className='flex justify-between'>
+            <div className="avatars flex items-center">
+              <img src={photoUrl} className="w-6 h-6 rounded-full" />
+              <img src={photoUrl} className="w-6 h-6 rounded-full" />
+            </div>
+            <button className="play-button text-yellow-300 mt-2">
+              <FontAwesomeIcon icon={faPlay} />
+            </button>
+          </div>
+        </div>
+
+
       </div>
+
+
+
+
+
+
 
 
 
