@@ -1,6 +1,6 @@
 'use client'; // Needed to use client-side logic like useEffect
 
-import { faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 
@@ -34,7 +34,8 @@ export default function Home() {
       const user = tg.initDataUnsafe?.user;
       if (user) {
         setUsername(user.first_name || 'Guest');
-        setPhotoUrl(user.photo_url || '/placeholder-profile.png'); // Use placeholder if no photo
+        setPhotoUrl(user.photo_url || './images/placeholder-profile.jpg'); // Use placeholder if no photo
+        console.log(photoUrl)
       } else {
         setUsername('Guest');
       }
@@ -42,41 +43,48 @@ export default function Home() {
   }, []);
 
   return (
-    <main style={{ textAlign: 'center', marginTop: '20px' }}>
+    <main className='blur-gradient' style={{ textAlign: 'center', marginTop: '-5px', minHeight: '100vh' }}>
       <div className="header flex justify-between items-center p-4">
-        <div>
-          <h2>{greeting}, {username}!</h2>
+        <div className='flex'>
+          <img
+            src={photoUrl}
+            alt="User Avatar"
+            className="w-12 h-12 rounded-full"
+          />
+          <div>
+            <h4 className='text-sm font-thin'>{greeting},</h4>
+            <h2> {username}!</h2>
+          </div>
         </div>
-        <img
-          src={photoUrl}
-          alt="User Avatar"
-          className="w-12 h-12 rounded-full"
-        />
-        <i className="fas fa-bell text-xl"></i>
+        <FontAwesomeIcon icon={faBell} className='w-9' />
       </div>
 
-      <div className="upcoming-meeting bg-blue-900 text-white p-4 rounded-xl shadow-md">
+      <div>
         <h3>Upcoming meeting</h3>
+      </div>
+      <div className="upcoming-meeting bg-transparent yellow-border border-2 text-white p-4 rounded-xl shadow-md mx-4 mt-2 mb-3 ">
         <div>
-          <h4 className="text-lg font-bold">Meeting with developers team</h4>
+          <h4 className="text-2xl mb-14 text-left yellow-text">Meeting with developers team</h4>
+        </div>
+        <div className='flex justify-between'>
           <p className="text-sm">Jan 10, 9:30 - 11:30 am</p>
           <div className="avatars flex items-center">
             {/* Replace with dynamic participant avatars */}
-            <img src="/avatar1.png" className="w-8 h-8 rounded-full" />
-            <img src="/avatar2.png" className="w-8 h-8 rounded-full" />
+            <img src="./images/placeholder-profile.jpg" className="w-8 h-8 rounded-full" />
+            <img src="./images/placeholder-profile.jpg" className="w-8 h-8 rounded-full" />
             <span className="text-sm bg-gray-700 p-1 rounded-full">+5</span>
           </div>
         </div>
       </div>
 
-      <div className="task-card bg-white p-4 rounded-lg shadow-md">
+      <div className="task-card bg-gray-400 p-4 rounded-lg shadow-md mx-4 mt-2 mb-3">
         <span className="tag bg-red-500 text-white px-2 py-1 rounded-full">Urgent</span>
         <h4 className="font-bold">Market research for Zulla project</h4>
         <p className="text-sm">28h</p>
         <div className="avatars flex items-center">
           {/* Replace with dynamic participant avatars */}
-          <img src="/avatar1.png" className="w-6 h-6 rounded-full" />
-          <img src="/avatar2.png" className="w-6 h-6 rounded-full" />
+          <img src="./images/placeholder-profile.jpg" className="w-6 h-6 rounded-full" />
+          <img src="./images/placeholder-profile.jpg" className="w-6 h-6 rounded-full" />
         </div>
         <button className="play-button text-yellow-300">
           <FontAwesomeIcon icon={faPlay} />

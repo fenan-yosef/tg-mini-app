@@ -35,8 +35,8 @@ export default function RootLayout({ children }) {
         <div className="min-h-screen flex flex-col">
           <main className="flex-1">{children}</main>
           {/* Fixed Date UI */}
-          <div className="fixed bottom-[60px] left-0 w-full px-3">
-            <div className={`flex justify-center items-start flex-col ${styles["dark-blue"]} text-white py-3 rounded-xl shadow-lg`}>
+          <div className="fixed bottom-[30px] left-0 w-full">
+            <div className={`flex pb-12 justify-center items-start flex-col ${styles["dark-blue"]} text-white py-3 px-3 shadow-lg`}>
               <span className="text-sm font-medium">
                 {formattedDate}
               </span>

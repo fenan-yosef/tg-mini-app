@@ -6,8 +6,21 @@
 
 /* Custom styles (optional) */
 body {
-  background-color: #001f3f; /* Match your design */
   color: #ffffff;
+  background-color: transparent;
   /* font-family: 'poppins'; */
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.blur-gradient{
+  background-image: url(../../public/images/270.jpg);
+}
+
+.yellow-text{
+  color: #e0f569;
+}
+
+
+.yellow-border{
+  border-color: #e0f569;
 }
