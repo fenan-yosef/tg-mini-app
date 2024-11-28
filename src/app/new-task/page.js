@@ -14,7 +14,7 @@ export default function TasksPage() {
   ];
 
   return (
-    <div className="mb-56">
+    <div className="">
       {/* Header */}
       <div className="p-4 flex">
         <NavLink styles="font-light" href="/" icon="faHome" label="Cancel" />
@@ -30,7 +30,11 @@ export default function TasksPage() {
         <CustomInput type="text" placeholder="Enter your name" />
 
         <ThinText label={"Description"} />
-        <CustomInput type="text" placeholder="" additionalStyles="min-h-48" />
+        {/* <CustomInput type="text" placeholder="" additionalStyles="min-h-48" /> */}
+        <textarea
+          placeholder=""
+          className={`bg-[#1e2a38] min-h-48 text-white ml-1 w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-blue-900 `}
+        />
 
         {/* Time */}
         <div className="flex justify-center align-middle ">
@@ -56,7 +60,7 @@ export default function TasksPage() {
                 key={priority.value}
                 onClick={() => setSelectedPriority(priority.value)}
                 className={`flex-1 text-white px-4 py-2 rounded-lg ${selectedPriority === priority.value
-                  ? "bg-blue-600"
+                  ? "bg-[#4987de]"
                   : "bg-[#1e2a38]"
                   } focus:outline-none transition duration-300`}
               >
