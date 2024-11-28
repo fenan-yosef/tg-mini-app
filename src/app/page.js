@@ -61,7 +61,7 @@ export default function Home() {
       <div>
         <h3>Upcoming meeting</h3>
       </div>
-      <div className="upcoming-meeting bg-transparent yellow-border border-2 text-white p-4 rounded-xl shadow-md mx-4 mt-2 mb-3 ">
+      <div className="backdrop-blur-sm upcoming-meeting bg-transparent yellow-border border-2 text-white p-4 rounded-xl shadow-md mx-4 mt-2 mb-3 ">
         <div>
           <h4 className="text-2xl mb-14 text-left yellow-text">Meeting with developers team</h4>
         </div>
@@ -69,13 +69,19 @@ export default function Home() {
           <p className="text-sm">Jan 10, 9:30 - 11:30 am</p>
           <div className="avatars flex items-center">
             {/* Replace with dynamic participant avatars */}
-            <img src="./images/placeholder-profile.jpg" className="w-8 h-8 rounded-full" />
-            <img src="./images/placeholder-profile.jpg" className="w-8 h-8 rounded-full" />
+            <img src={photoUrl} className="w-8 h-8 rounded-full" />
+            <img src={photoUrl} className="w-8 h-8 rounded-full" />
             <span className="text-sm bg-gray-700 p-1 rounded-full">+5</span>
           </div>
         </div>
       </div>
 
+      <div>
+        <h3 className='pt-4 text-lg font-bold text-left ml-4'>Be Productive Today</h3>
+        <p className='pb-4 text-sm font-thin text-left ml-4'>Tasks to be done </p>
+      </div>
+
+      {/* first card */}
       <div className="masonry-container columns-2 gap-4 px-4 ">
         <div className="task-card text-left break-inside bg-white text-black p-4 rounded-lg shadow-md mb-4">
           <span className="tag px-2 pink-bg py-1 rounded-full text-xs font-bold">
@@ -97,10 +103,11 @@ export default function Home() {
           </div>
         </div>
 
+        {/* second card */}
         <div className="task-card text-left break-inside blue-bg p-4 rounded-lg shadow-md mb-4">
           <span className="tag px-2 yellow-bg py-1 text-black rounded-full text-xs font-bold">
             <FontAwesomeIcon icon={faHourglassHalf} className='mx-1' />
-            Urgent
+            Normal
           </span>
           <h4 className="font-bold my-2">Monthly report</h4>
           <p className="text-sm my-2">2h</p>
@@ -115,10 +122,11 @@ export default function Home() {
           </div>
         </div>
 
+        {/* third card */}
         <div className="task-card text-left break-inside blue-bg p-4 rounded-lg shadow-md mb-4">
           <span className="tag px-2 yellow-bg py-1 text-black rounded-full text-xs font-bold">
             <FontAwesomeIcon icon={faHourglassHalf} className='mx-1' />
-            Urgent
+            Normal
           </span>
           <h4 className="font-bold my-2">Monthly report</h4>
           <p className="text-sm my-2">2h</p>
@@ -133,6 +141,7 @@ export default function Home() {
           </div>
         </div>
 
+        {/* fourth card */}
         <div className="task-card liquid-marble-bg text-left break-inside  p-4 rounded-lg shadow-md mb-4">
           <span className="tag px-2 bg-blue-950 py-1 text-white rounded-full text-xs font-bold">
             <FontAwesomeIcon icon={faPause} className='mx-1' />
@@ -140,7 +149,7 @@ export default function Home() {
           </span>
           <h4 className="font-bold my-2">Monthly report</h4>
           <p className="text-sm my-2">2h</p>
-          <div className='flex justify-between'>
+          <div className='flex justify-between pt-7 pb-2'>
             <div className="avatars flex items-center">
               <img src={photoUrl} className="w-6 h-6 rounded-full" />
               <img src={photoUrl} className="w-6 h-6 rounded-full" />

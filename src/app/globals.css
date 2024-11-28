@@ -19,6 +19,8 @@ body {
   background-image: url(../../public/images/rm380-09.jpg);
   background-size: cover;
   background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 .yellow-text{
@@ -51,4 +53,3 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
 }
-

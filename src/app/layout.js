@@ -27,6 +27,7 @@ export default function RootLayout({ children }) {
   });
 
   return (
+
     <html lang="en">
       <head>
         <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
@@ -46,14 +47,20 @@ export default function RootLayout({ children }) {
             </div>
           </div>
           {/* Bottom Navbar */}
-          <nav className="fixed bottom-0 left-0 p-3 w-full bg-gray-800 shadow-md border-t rounded-tl-3xl rounded-tr-3xl border-gray-700">
+          {/* <nav className="fixed bottom-0 left-0 p-3 w-full bg-gray-800 shadow-md border-t rounded-tl-3xl rounded-tr-3xl border-gray-700">
             <div className="flex justify-around items-center p-3">
               <NavLink href="/" icon='faHome' label="Home" />
               <NavLink href="/tasks" icon="fa-tasks" label="Tasks" />
               <NavLink href="/new-task" icon="faUser" label="New" />
               <NavLink href="/projects" icon="faUser" label="Projects" />
             </div>
-          </nav>
+          </nav> */}
+          {<BottomNav /> || <div className="flex justify-around items-center p-3">
+            <NavLink href="/" icon='faHome' label="Home" />
+            <NavLink href="/tasks" icon="fa-tasks" label="Tasks" />
+            <NavLink href="/new-task" icon="faUser" label="New" />
+            <NavLink href="/projects" icon="faUser" label="Projects" />
+          </div>}
         </div>
       </body>
     </html>
@@ -71,3 +78,7 @@ function NavLink({ href, icon, label }) {
     </a>
   );
 }
+
+
+import dynamic from "next/dynamic";
+const BottomNav = dynamic(() => import("./components/BottomNav"), { ssr: false });
