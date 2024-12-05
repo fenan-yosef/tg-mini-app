@@ -1,6 +1,6 @@
 'use client'; // Needed to use client-side logic like useEffect
 
-import { faBell, faFire, faHourglassHalf, faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faBell, faPlay, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 
@@ -22,6 +22,7 @@ export default function Home() {
   const [username, setUsername] = useState('');
   const [photoUrl, setPhotoUrl] = useState('');
   const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
   const hours = new Date().getHours();
   const greeting = hours < 12 ? 'Good morning' : 'Good evening';
 
@@ -31,6 +32,8 @@ export default function Home() {
       const tg = window.Telegram.WebApp;
 
       tg.ready();
+
+      fetchTasks(6627826120);
 
       const user = tg.initDataUnsafe?.user;
       if (user) {
@@ -45,7 +48,8 @@ export default function Home() {
 
   const fetchTasks = async (user_id) => {
     try {
-      const response = await fetch(`/api/tasks?user_id=${user_id}`);
+      console.log('here')
+      const response = await fetch(`/api/task/${user_id}`);
       if (response.ok) {
         const data = await response.json();
         setTasks(data);
@@ -54,7 +58,14 @@ export default function Home() {
       }
     } catch (error) {
       console.error("Error fetching tasks:", error);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const capitalizeFirstLetter = (str) => {
+    if (!str) return '';
+    return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
   return (
@@ -97,116 +108,23 @@ export default function Home() {
         <p className='pb-4 text-sm font-thin text-left ml-4'>Tasks to be done </p>
       </div>
 
-
-      <div className="masonry-container columns-2 gap-4 px-4 ">
-
-        {/* first card */}
-        <div className="task-card text-left break-inside bg-white text-black p-4 rounded-lg shadow-md mb-4">
-          <span className="tag px-2 pink-bg py-1 rounded-full text-xs font-bold">
-            <FontAwesomeIcon icon={faFire} className='mx-1' />
-            Urgent
-          </span>
-          <div className='pb-10 mt-5'>
-            <h4 className="font-bold ">Market research for Zulla project</h4>
-            <p className="text-sm">28h</p>
-          </div>
-          <div className='flex justify-between'>
-            <div className="avatars flex items-center">
-              <img src={photoUrl} className="w-6 h-6 rounded-full" />
-              <img src={photoUrl} className="w-6 h-6 rounded-full" />
-            </div>
-            <button className="play-button text-yellow-300 mt-2">
-              <FontAwesomeIcon icon={faPlay} size='lg' />
-            </button>
-          </div>
+      {loading ? (
+        <div className="flex justify-center items-center mt-10  min-h-52">
+          <FontAwesomeIcon icon={faSpinner} spin size="2x" />
         </div>
+      ) : (
+        <div className="masonry-container columns-2 gap-4 px-4  break-inside-avoid  ">
 
-        {/* second card */}
-        <div className="task-card text-left break-inside blue-bg p-4 rounded-lg shadow-md mb-4">
-          <span className="tag px-2 yellow-bg py-1 text-black rounded-full text-xs font-bold">
-            <FontAwesomeIcon icon={faHourglassHalf} className='mx-1' />
-            Normal
-          </span>
-          <h4 className="font-bold my-2">Monthly report</h4>
-          <p className="text-sm my-2">2h</p>
-          <div className='flex justify-between'>
-            <div className="avatars flex items-center">
-              <img src={photoUrl} className="w-6 h-6 rounded-full" />
-              <img src={photoUrl} className="w-6 h-6 rounded-full" />
-            </div>
-            <button className="play-button text-yellow-300 mt-2">
-              <FontAwesomeIcon icon={faPlay} />
-            </button>
-          </div>
-        </div>
 
-        {/* third card */}
-        <div className="task-card text-left break-inside blue-bg p-4 rounded-lg shadow-md mb-4">
-          <span className="tag px-2 yellow-bg py-1 text-black rounded-full text-xs font-bold">
-            <FontAwesomeIcon icon={faHourglassHalf} className='mx-1' />
-            Normal
-          </span>
-          <h4 className="font-bold my-2">Monthly report</h4>
-          <p className="text-sm my-2">2h</p>
-          <div className='flex justify-between'>
-            <div className="avatars flex items-center">
-              <img src={photoUrl} className="w-6 h-6 rounded-full" />
-              <img src={photoUrl} className="w-6 h-6 rounded-full" />
-            </div>
-            <button className="play-button text-yellow-300 mt-2">
-              <FontAwesomeIcon icon={faPlay} />
-            </button>
-          </div>
-        </div>
-
-        {/* fourth card */}
-        <div className="task-card liquid-marble-bg text-left break-inside  p-4 rounded-lg shadow-md mb-4">
-          <span className="tag px-2 bg-blue-950 py-1 text-white rounded-full text-xs font-bold">
-            <FontAwesomeIcon icon={faPause} className='mx-1' />
-            On pause
-          </span>
-          <h4 className="font-bold my-2">Monthly report</h4>
-          <p className="text-sm my-2">2h</p>
-          <div className='flex justify-between pt-7 pb-2'>
-            <div className="avatars flex items-center">
-              <img src={photoUrl} className="w-6 h-6 rounded-full" />
-              <img src={photoUrl} className="w-6 h-6 rounded-full" />
-            </div>
-            <button className="play-button text-yellow-300 mt-2">
-              <FontAwesomeIcon icon={faPlay} />
-            </button>
-          </div>
-        </div>
-
-        {/* fifth card */}
-        <div className="task-card liquid-marble-bg text-left break-inside  p-4 rounded-lg shadow-md mb-4">
-          <span className="tag px-2 bg-blue-950 py-1 text-white rounded-full text-xs font-bold">
-            <FontAwesomeIcon icon={faPause} className='mx-1' />
-            On pause
-          </span>
-          <h4 className="font-bold my-2">Monthly report</h4>
-          <p className="text-sm my-2">2h</p>
-          <div className='flex justify-between pt-7 pb-2'>
-            <div className="avatars flex items-center">
-              <img src={photoUrl} className="w-6 h-6 rounded-full" />
-              <img src={photoUrl} className="w-6 h-6 rounded-full" />
-            </div>
-            <button className="play-button text-yellow-300 mt-2">
-              <FontAwesomeIcon icon={faPlay} />
-            </button>
-          </div>
-        </div>
-
-        {/* low cards */}
-        <div className="masonry-container columns-2 gap-4 px-4">
-          {tasks.map((task) => (
+          {/* low cards */}
+          {tasks.length > 0 ? (tasks.map((task) => (
             <div
               key={task._id}
-              className={`task-card ${task.priority === "low" ? "green-bg" : task.priority === "urgent" ? "pink-bg" : "blue-bg"
-                } text-left break-inside p-4 rounded-lg shadow-md mb-4`}
+              className={`task-card ${task.priority === "low" ? "blue-bg" : task.priority === "urgent" ? "pink-bg" : "blue-bg"
+                } text-left break-inside-avoid p-4 rounded-lg shadow-md mb-4`}
             >
               <span
-                className={`tag px-2 py-1 rounded-full text-xs font-bold ${task.priority === "low" ? "text-green-800 bg-green-200" : "text-white bg-red-600"
+                className={`tag px-2 py-1 rounded-full text-xs font-bold ${task.priority === "low" ? "text-black bg-white" : "text-white bg-red-600"
                   }`}
               >
                 {task.priority === "low" ? (
@@ -216,22 +134,24 @@ export default function Home() {
                 )}
                 {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
               </span>
-              <h4 className="font-bold my-2">{task.title}</h4>
-              <p className="text-sm my-2">{task.description}</p>
-              <p className="text-xs text-gray-500">Due: {new Date(task.dueDate).toLocaleDateString()}</p>
+              <h4 className="font-bold my-2">{capitalizeFirstLetter(task.title)}</h4>
+              <p className="text-sm my-2">{capitalizeFirstLetter(task.description)}</p>
+              <div className='flex justify-between pt-7 pb-2'>
+                <p className="text-sm my-2">{task.leftHours}hr</p>
+                <button className="play-button text-yellow-300 mt-2">
+                  <FontAwesomeIcon icon={faPlay} />
+                </button>
+              </div>
+              <p className="text-xs text-gray-300">Due: {new Date(task.dueDate).toLocaleDateString()}</p>
             </div>
-          ))}
+          ))) : (
+            <div className="text-center mt-10">
+              <p className="text-gray-500">You have no tasks yet. Start by adding a new task to stay productive!</p>
+            </div>
+          )}
         </div>
-
-
-      </div>
-
-
-
-
-
-
-
+      )
+      }
 
 
     </main>
