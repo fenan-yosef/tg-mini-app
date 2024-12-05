@@ -36,6 +36,7 @@ export default function Home() {
       if (user) {
         setUsername(user.first_name || 'Guest');
         setPhotoUrl(user.photo_url || './images/placeholder-profile.jpg'); // Use placeholder if no photo
+        fetchTasks(user.id);
       } else {
         setUsername('Guest');
       }
