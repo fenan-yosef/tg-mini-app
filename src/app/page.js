@@ -178,6 +178,25 @@ export default function Home() {
           </div>
         </div>
 
+        {/* fifth card */}
+        <div className="task-card liquid-marble-bg text-left break-inside  p-4 rounded-lg shadow-md mb-4">
+          <span className="tag px-2 bg-blue-950 py-1 text-white rounded-full text-xs font-bold">
+            <FontAwesomeIcon icon={faPause} className='mx-1' />
+            On pause
+          </span>
+          <h4 className="font-bold my-2">Monthly report</h4>
+          <p className="text-sm my-2">2h</p>
+          <div className='flex justify-between pt-7 pb-2'>
+            <div className="avatars flex items-center">
+              <img src={photoUrl} className="w-6 h-6 rounded-full" />
+              <img src={photoUrl} className="w-6 h-6 rounded-full" />
+            </div>
+            <button className="play-button text-yellow-300 mt-2">
+              <FontAwesomeIcon icon={faPlay} />
+            </button>
+          </div>
+        </div>
+
         {/* low cards */}
         <div className="masonry-container columns-2 gap-4 px-4">
           {tasks.map((task) => (
