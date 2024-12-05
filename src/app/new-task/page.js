@@ -5,13 +5,64 @@ import NavLink from "../components/NavLink";
 
 
 export default function TasksPage() {
-  const [selectedPriority, setSelectedPriority] = useState("normal");
 
   const priorities = [
     { label: "Urgent", value: "urgent" },
     { label: "Normal", value: "normal" },
     { label: "Low", value: "low" },
   ];
+
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [dueDate, setDueDate] = useState("");
+  const [estimatedHours, setEstimatedHours] = useState("");
+  const [selectedPriority, setSelectedPriority] = useState("normal");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+
+  const handleSubmit = async () => {
+    if (!title || !description || !dueDate || !estimatedHours) {
+      alert("Please fill out all required fields.");
+      return;
+    }
+
+    const newTask = {
+      title,
+      description,
+      dueDate,
+      estimatedHours: parseInt(estimatedHours),
+      priority: selectedPriority,
+    };
+
+    try {
+      setIsSubmitting(true);
+      const response = await fetch("/api/add_task", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newTask),
+      });
+
+      if (response.ok) {
+        alert("Task created successfully!");
+        // Reset form fields
+        setTitle("");
+        setDescription("");
+        setDueDate("");
+        setEstimatedHours("");
+        setSelectedPriority("normal");
+      } else {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.error || "Failed to create task"}`);
+      }
+    } catch (error) {
+      alert(`Error: ${error.message}`);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
 
   return (
     <div className="">
