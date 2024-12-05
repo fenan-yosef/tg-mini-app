@@ -25,13 +25,27 @@ export default function TasksPage() {
       alert("Please fill out all required fields.");
       return;
     }
+    const tg = window.Telegram.WebApp;
+
+    tg.ready();
+    const now = new Date();
+
+    const user = tg.initDataUnsafe?.user;
+
+    const user_id = user?.id || "defaultUserId";
 
     const newTask = {
       title,
+      user_id,
       description,
+      setDate: now,
       dueDate,
       estimatedHours: parseInt(estimatedHours),
+      leftHours: parseInt(estimatedHours),
       priority: selectedPriority,
+      deleted: false,
+      createdAt: { $date: { $numberLong: now.getTime().toString() } },
+      updatedAt: { $date: { $numberLong: now.getTime().toString() } },
     };
 
     try {
@@ -65,7 +79,7 @@ export default function TasksPage() {
 
 
   return (
-    <div className="">
+    <div className="mb-24">
       {/* Header */}
       <div className="p-4 flex">
         <NavLink styles="font-light" href="/" icon="faHome" label="Cancel" />
@@ -75,32 +89,47 @@ export default function TasksPage() {
       </div>
 
       {/* Body */}
-      <div className=" px-4">
-
+      <div className="px-4">
         <ThinText label={"Title"} />
-        <CustomInput type="text" placeholder="Enter your name" />
+        <CustomInput
+          type="text"
+          placeholder="Enter task title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
 
         <ThinText label={"Description"} />
-        {/* <CustomInput type="text" placeholder="" additionalStyles="min-h-48" /> */}
         <textarea
-          placeholder=""
-          className={`bg-[#1e2a38] min-h-48 text-white ml-1 w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-blue-900 `}
+          placeholder="Enter task description"
+          className="bg-[#1e2a38] min-h-48 text-white ml-1 w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-blue-900"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
         />
 
         {/* Time */}
         <div className="flex justify-center align-middle ">
-
-          <div className="m-2 ">
+          <div className="m-2">
             <ThinText label={"Due Date"} />
-            <CustomInput type="date" placeholder="" />
+            <CustomInput
+              type="date"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+            />
           </div>
 
-          <div className="m-2 ">
-            <ThinText label={'Estimate Task'} />
-            <CustomInput type="number" placeholder="HH" additionalStyles="" min="0" max="99" />
+          <div className="m-2">
+            <ThinText label={"Estimate Task"} />
+            <CustomInput
+              type="number"
+              placeholder="HH"
+              min="0"
+              max="99"
+              value={estimatedHours}
+              onChange={(e) => setEstimatedHours(e.target.value)}
+            />
           </div>
-
         </div>
+
 
         {/* Priority */}
         <div className="m-2">
@@ -121,6 +150,17 @@ export default function TasksPage() {
           </div>
         </div>
 
+        {/* submit */}
+        <div className="flex justify-center">
+          <button
+            className="bg-[#e0f569] text-black font-bold py-3 px-6 rounded-2xl shadow-md"
+            disabled={isSubmitting}
+            onClick={handleSubmit}
+          >
+            {isSubmitting ? "Creating Task..." : "Create Task"}
+          </button>
+        </div>
+
 
       </div>
     </div >
@@ -135,10 +175,12 @@ function ThinText({ label }) {
   );
 }
 
-function CustomInput({ type = "text", placeholder = "", additionalStyles = "" }) {
+function CustomInput({ type = "text", placeholder = "", additionalStyles = "", value, onChange }) {
   return (
     <input
       type={type}
+      value={value}
+      onChange={onChange}
       placeholder={placeholder}
       className={`bg-[#1e2a38] text-white w-full min-h-16 px-3 mb-4 pt-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-blue-900 ${additionalStyles}`}
     />
