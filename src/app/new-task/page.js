@@ -59,7 +59,7 @@ export default function TasksPage() {
       });
 
       if (response.ok) {
-        alert("Task created successfully!");
+        // alert("Task created successfully!");
         // Reset form fields
         setTitle("");
         setDescription("");

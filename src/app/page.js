@@ -48,7 +48,7 @@ export default function Home() {
           <img
             src={photoUrl}
             alt="User Avatar"
-            className="pl-3 w-12 h-12 rounded-full"
+            className="pl-3 w-12 h-12 rounded-md"
           />
           <div>
             <h4 className='text-sm font-thin'>{greeting},</h4>
