@@ -67,11 +67,11 @@ export default function TasksPage() {
         setEstimatedHours("");
         setSelectedPriority("normal");
       } else {
-        const errorData = await response.json();
-        alert(`Error: ${errorData.error || "Failed to create task"}`);
+        // const errorData = await response.json();
+        // alert(`Error: ${errorData.error || "Failed to create task"}`);
       }
     } catch (error) {
-      alert(`Error: ${error.message}`);
+      setTitle(`Error: ${error.message}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -84,7 +84,7 @@ export default function TasksPage() {
       <div className="p-4 flex">
         <NavLink styles="font-light" href="/" icon="faHome" label="Cancel" />
         <div className="flex align-middle m-auto pr-6">
-          <p className="text-center font-bold">New Task</p>
+          <p className="text-center font-bold" id="tree">New Task</p>
         </div>
       </div>
 
