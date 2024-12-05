@@ -28,10 +28,10 @@ export default function Home() {
       // Ensure the WebApp is ready
       tg.ready();
 
-      // Fetch the Telegram user's username
       const user = tg.initDataUnsafe?.user;
-      if (user && user.username) {
-        setUsername(user.username);
+      if (user) {
+        setUsername(user.first_name || 'Guest');
+        setPhotoUrl(user.photo_url || './images/placeholder-profile.jpg');
       } else {
         setUsername('Guest');
       }
@@ -40,7 +40,7 @@ export default function Home() {
 
   return (
     <main style={{ textAlign: 'center', marginTop: '20px' }}>
-      <h1>Hello, @{username}!</h1>
+      <h1>{username}'s dashboard!</h1>
       <div className="p-6 space-y-8">
         <div className=" p-6 rounded-xl shadow-md">
           <h2 className="text-lg font-bold text-white mb-4">My Projects</h2>

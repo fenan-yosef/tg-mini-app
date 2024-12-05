@@ -1,6 +1,6 @@
 'use client'; // Needed to use client-side logic like useEffect
 
-import { faArrowDown, faBell, faPlay, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faBell, faFire, faHourglass2, faPlay, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 
@@ -33,7 +33,7 @@ export default function Home() {
 
       tg.ready();
 
-      fetchTasks(6627826120);
+      // fetchTasks(6627826120);
 
       const user = tg.initDataUnsafe?.user;
       if (user) {
@@ -75,7 +75,7 @@ export default function Home() {
           <img
             src={photoUrl}
             alt="User Avatar"
-            className="pl-3 w-12 h-12 rounded-md"
+            className="pl-3 w-10 h-10 rounded-md mx-1 mr-3"
           />
           <div>
             <h4 className='text-sm font-thin'>{greeting},</h4>
@@ -120,18 +120,17 @@ export default function Home() {
           {tasks.length > 0 ? (tasks.map((task) => (
             <div
               key={task._id}
-              className={`task-card ${task.priority === "low" ? "blue-bg" : task.priority === "urgent" ? "pink-bg" : "blue-bg"
+              className={`task-card ${task.priority === "low" ? "blue-bg" : task.priority === "urgent" ? "bg-white text-black text-lg" : "blue-bg"
                 } text-left break-inside-avoid p-4 rounded-lg shadow-md mb-4`}
             >
               <span
-                className={`tag px-2 py-1 rounded-full text-xs font-bold ${task.priority === "low" ? "text-black bg-white" : "text-white bg-red-600"
-                  }`}
+                className={`tag px-2 py-1 rounded-full text-xs font-bold ${task.priority === "low" ? "text-black bg-white" : task.priority === "urgent" ? "pink-bg text-black" : "text-black yellow-bg "}`}
               >
                 {task.priority === "low" ? (
-                  <FontAwesomeIcon icon={faArrowDown} />
-                ) : (
-                  <FontAwesomeIcon icon={faPlay} />
-                )}
+                  <FontAwesomeIcon icon={faArrowDown} className='mx-1' />
+                ) : task.priority === "urgent" ? (
+                  <FontAwesomeIcon icon={faFire} className='mx-1' />
+                ) : (<FontAwesomeIcon icon={faHourglass2} className='mx-1' />)}
                 {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
               </span>
               <h4 className="font-bold my-2">{capitalizeFirstLetter(task.title)}</h4>
