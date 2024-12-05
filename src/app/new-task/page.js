@@ -43,6 +43,7 @@ export default function TasksPage() {
       estimatedHours: parseInt(estimatedHours),
       leftHours: parseInt(estimatedHours),
       priority: selectedPriority,
+      onPause: false,
       deleted: false,
       createdAt: { $date: { $numberLong: now.getTime().toString() } },
       updatedAt: { $date: { $numberLong: now.getTime().toString() } },

@@ -5,24 +5,24 @@ export default async function handler(req, res) {
         const client = await clientPromise;
         const db = client.db("task_manager");
 
-        const { task_id } = req.query;
+        const { user_id } = req.query; // Extract user_id from query params
 
         switch (req.method) {
             case "GET":
-                // Fetch a task by task_id
-                const task = await db.collection("tasks").findOne({ task_id: task_id });
-                if (!task) {
-                    res.status(404).json({ message: "Task not found" });
+                // Fetch tasks by user_id
+                const tasks = await db.collection("tasks").find({ user_id: Number(user_id), deleted: false }).toArray();
+                if (!tasks.length) {
+                    res.status(404).json({ message: "No tasks found for this user" });
                 } else {
-                    res.status(200).json(task);
+                    res.status(200).json(tasks);
                 }
                 break;
 
             case "PUT":
-                // Update a task by task_id
+                // Update a task by task_id (if needed)
+                const { task_id } = req.body; // Ensure task_id is included in the body
                 const updateData = req.body;
 
-                // Add updatedAt field
                 updateData.updatedAt = new Date();
 
                 const result = await db.collection("tasks").updateOne(

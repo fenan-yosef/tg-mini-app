@@ -21,6 +21,7 @@ const data = [
 export default function Home() {
   const [username, setUsername] = useState('');
   const [photoUrl, setPhotoUrl] = useState('');
+  const [tasks, setTasks] = useState([]);
   const hours = new Date().getHours();
   const greeting = hours < 12 ? 'Good morning' : 'Good evening';
 
@@ -40,6 +41,20 @@ export default function Home() {
       }
     }
   }, []);
+
+  const fetchTasks = async (user_id) => {
+    try {
+      const response = await fetch(`/api/tasks?user_id=${user_id}`);
+      if (response.ok) {
+        const data = await response.json();
+        setTasks(data);
+      } else {
+        console.error("Failed to fetch tasks");
+      }
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+    }
+  };
 
   return (
     <main className='blur-gradient' style={{ textAlign: 'center', marginTop: '-5px', marginBottom: '130px', minHeight: '100vh' }}>
@@ -81,8 +96,10 @@ export default function Home() {
         <p className='pb-4 text-sm font-thin text-left ml-4'>Tasks to be done </p>
       </div>
 
-      {/* first card */}
+
       <div className="masonry-container columns-2 gap-4 px-4 ">
+
+        {/* first card */}
         <div className="task-card text-left break-inside bg-white text-black p-4 rounded-lg shadow-md mb-4">
           <span className="tag px-2 pink-bg py-1 rounded-full text-xs font-bold">
             <FontAwesomeIcon icon={faFire} className='mx-1' />
@@ -158,6 +175,32 @@ export default function Home() {
               <FontAwesomeIcon icon={faPlay} />
             </button>
           </div>
+        </div>
+
+        {/* low cards */}
+        <div className="masonry-container columns-2 gap-4 px-4">
+          {tasks.map((task) => (
+            <div
+              key={task._id}
+              className={`task-card ${task.priority === "low" ? "green-bg" : task.priority === "urgent" ? "pink-bg" : "blue-bg"
+                } text-left break-inside p-4 rounded-lg shadow-md mb-4`}
+            >
+              <span
+                className={`tag px-2 py-1 rounded-full text-xs font-bold ${task.priority === "low" ? "text-green-800 bg-green-200" : "text-white bg-red-600"
+                  }`}
+              >
+                {task.priority === "low" ? (
+                  <FontAwesomeIcon icon={faArrowDown} />
+                ) : (
+                  <FontAwesomeIcon icon={faPlay} />
+                )}
+                {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
+              </span>
+              <h4 className="font-bold my-2">{task.title}</h4>
+              <p className="text-sm my-2">{task.description}</p>
+              <p className="text-xs text-gray-500">Due: {new Date(task.dueDate).toLocaleDateString()}</p>
+            </div>
+          ))}
         </div>
 
 
