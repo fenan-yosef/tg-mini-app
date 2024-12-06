@@ -28,10 +28,9 @@ export default function Home() {
       // Ensure the WebApp is ready
       tg.ready();
 
-      const user = tg.initDataUnsafe?.user;
-      if (user) {
-        setUsername(user.first_name || 'Guest');
-        setPhotoUrl(user.photo_url || './images/placeholder-profile.jpg');
+      const user1 = tg.initDataUnsafe?.user;
+      if (user1) {
+        setUsername(user1.first_name || 'noUserName');
       } else {
         setUsername('Guest');
       }

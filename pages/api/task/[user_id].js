@@ -12,6 +12,7 @@ export default async function handler(req, res) {
             case "GET":
                 // Fetch tasks by user_id
                 const tasks = await db.collection("tasks").find({ user_id: Number(user_id), deleted: false }).toArray();
+                // console.log(tasks)
                 if (!tasks.length) {
                     res.status(404).json({ message: "No tasks found for this user" });
                 } else {

@@ -18,10 +18,17 @@ export default function TasksPage() {
   const [estimatedHours, setEstimatedHours] = useState("");
   const [selectedPriority, setSelectedPriority] = useState("normal");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [taskType, setTaskType] = useState('task')
+  const [meetingDate, setMeetingDate] = useState("")
 
 
   const handleSubmit = async () => {
-    if (!title || !description || !dueDate || !estimatedHours) {
+    if (!title || !description) {
+      alert("Please fill out all required fields.");
+      return;
+    }
+    if ((taskType === 'task' && (!dueDate || !estimatedHours)) ||
+      (taskType == 'meeting') && !meetingDate) {
       alert("Please fill out all required fields.");
       return;
     }
@@ -36,18 +43,24 @@ export default function TasksPage() {
 
     const newTask = {
       title,
+      taskType,
       user_id,
       description,
       setDate: now,
-      dueDate,
-      estimatedHours: parseInt(estimatedHours),
       leftHours: parseInt(estimatedHours),
-      priority: selectedPriority,
       onPause: false,
       deleted: false,
       createdAt: { $date: { $numberLong: now.getTime().toString() } },
       updatedAt: { $date: { $numberLong: now.getTime().toString() } },
     };
+
+    if (taskType === 'task') {
+      newTask.dueDate = dueDate;
+      newTask.estimatedHours = parseInt(estimatedHours);
+      newTask.priority = selectedPriority;
+    } else if (taskType === 'meeting') {
+      newTask.meetingDate = meetingDate;
+    }
 
     try {
       setIsSubmitting(true);
@@ -65,6 +78,7 @@ export default function TasksPage() {
         setTitle("");
         setDescription("");
         setDueDate("");
+        setMeetingDate('')
         setEstimatedHours("");
         setSelectedPriority("normal");
       } else {
@@ -78,6 +92,8 @@ export default function TasksPage() {
     }
   };
 
+  const [isFocused, setIsFocused] = useState(false)
+
 
   return (
     <div className="mb-24">
@@ -87,6 +103,21 @@ export default function TasksPage() {
         <div className="flex align-middle m-auto pr-6">
           <p className="text-center font-bold">New Task</p>
         </div>
+      </div>
+
+      <div className="flex justify-center my-4">
+        <button
+          onClick={() => setTaskType('task')}
+          className={`px-4 py-2 ${taskType === 'task' ? 'bg-[#4987de] text-white shadow-lg shadow-inner shadow-black' : 'bg-gray-200 text-gray-700 '} rounded-l-xl`}
+        >
+          Task
+        </button>
+        <button
+          onClick={() => setTaskType('meeting')}
+          className={`px-4 py-2 ${taskType === 'meeting' ? 'bg-[#4987de] text-white shadow-lg shadow-inner shadow-black' : 'bg-gray-200 text-gray-700'} rounded-r-xl`}
+        >
+          Meeting
+        </button>
       </div>
 
       {/* Body */}
@@ -102,54 +133,76 @@ export default function TasksPage() {
         <ThinText label={"Description"} />
         <textarea
           placeholder="Enter task description"
-          className="bg-[#1e2a38] min-h-48 text-white ml-1 w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-blue-900"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          className={`w-full px-4 py-2 rounded-lg bg-[#1e2a38] text-white transition duration-300 ${isFocused || description
+            ? 'border-2 border-[#e0f569]'
+            : 'border border-transparent'
+            } focus:outline-none`}
         />
 
-        {/* Time */}
-        <div className="flex justify-center align-middle ">
+        {/* Task specific fields*/}
+        {
+          taskType == 'task' && (
+            <>
+              <div className="flex justify-center align-middle ">
+                <div className="m-2 min-w-36">
+                  <ThinText label={"Due Date"} />
+                  <CustomInput
+                    type="date"
+                    value={dueDate}
+                    onChange={(e) => setDueDate(e.target.value)}
+                  />
+                </div>
+
+                <div className="m-2">
+                  <ThinText label={"Estimate Task"} />
+                  <CustomInput
+                    type="number"
+                    placeholder="HH"
+                    min="0"
+                    max="99"
+                    value={estimatedHours}
+                    onChange={(e) => setEstimatedHours(e.target.value)}
+                  />
+                </div>
+              </div>
+
+
+              {/* Priority */}
+              <div className="m-2">
+                <ThinText label={"Priority"} />
+                <div className="flex items-center gap-2 mt-2 bg-[#1e2a38]">
+                  {priorities.map((priority) => (
+                    <button
+                      key={priority.value}
+                      onClick={() => setSelectedPriority(priority.value)}
+                      className={`flex-1 text-white px-4 py-2 rounded-lg ${selectedPriority === priority.value
+                        ? "bg-[#4987de]"
+                        : "bg-[#1e2a38]"
+                        } focus:outline-none transition duration-300`}
+                    >
+                      {priority.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </>)
+        }
+
+        {/* Meeting-Specific Fields */}
+        {taskType === 'meeting' && (
           <div className="m-2">
-            <ThinText label={"Due Date"} />
+            <ThinText label="Meeting Date" />
             <CustomInput
-              type="date"
-              value={dueDate}
-              onChange={(e) => setDueDate(e.target.value)}
+              type="datetime-local"
+              value={meetingDate}
+              onChange={(e) => setMeetingDate(e.target.value)}
             />
           </div>
-
-          <div className="m-2">
-            <ThinText label={"Estimate Task"} />
-            <CustomInput
-              type="number"
-              placeholder="HH"
-              min="0"
-              max="99"
-              value={estimatedHours}
-              onChange={(e) => setEstimatedHours(e.target.value)}
-            />
-          </div>
-        </div>
-
-
-        {/* Priority */}
-        <div className="m-2">
-          <ThinText label={"Priority"} />
-          <div className="flex items-center gap-2 mt-2 bg-[#1e2a38]">
-            {priorities.map((priority) => (
-              <button
-                key={priority.value}
-                onClick={() => setSelectedPriority(priority.value)}
-                className={`flex-1 text-white px-4 py-2 rounded-lg ${selectedPriority === priority.value
-                  ? "bg-[#4987de]"
-                  : "bg-[#1e2a38]"
-                  } focus:outline-none transition duration-300`}
-              >
-                {priority.label}
-              </button>
-            ))}
-          </div>
-        </div>
+        )}
 
         {/* submit */}
         <div className="flex justify-center">
@@ -158,7 +211,7 @@ export default function TasksPage() {
             disabled={isSubmitting}
             onClick={handleSubmit}
           >
-            {isSubmitting ? "Creating Task..." : "Create Task"}
+            {taskType == 'task' ? isSubmitting ? "Creating Task..." : "Create Task" : isSubmitting ? "Setting up Meeting..." : "Create Meeting"}
           </button>
         </div>
 
@@ -176,14 +229,21 @@ function ThinText({ label }) {
   );
 }
 
-function CustomInput({ type = "text", placeholder = "", additionalStyles = "", value, onChange }) {
+function CustomInput({ type = "text", placeholder = "", additionalStyles = "", value, onChange, ...rest }) {
+  const [isFocused, setIsFocused] = useState(false)
   return (
     <input
       type={type}
       value={value}
       onChange={onChange}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
       placeholder={placeholder}
-      className={`bg-[#1e2a38] text-white w-full min-h-16 px-3 mb-4 pt-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-blue-900 ${additionalStyles}`}
+      className={`w-full px-4 py-2 rounded-lg bg-[#1e2a38] text-white transition duration-300 ${isFocused || value
+        ? 'border-2 border-[#e0f569]'
+        : 'border border-transparent'
+        } focus:outline-none`}
+      {...rest}
     />
   );
 }
