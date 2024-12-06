@@ -21,21 +21,27 @@ export default async function handler(req, res) {
                 break;
 
             case "PUT":
-                // Update a task by task_id (if needed)
-                const { task_id } = req.body; // Ensure task_id is included in the body
-                const updateData = req.body;
+                const { task_id, updateFields } = req.body; // Expect task_id and updateFields in the body
 
-                updateData.updatedAt = new Date();
+                if (!task_id) {
+                    return res.status(400).json({ message: "Task ID is required for updating." });
+                }
 
-                const result = await db.collection("tasks").updateOne(
-                    { task_id: task_id },
-                    { $set: updateData }
+                // Prepare update data
+                const updatedData = {
+                    ...updateFields, // Fields to update (e.g., leftHours, onPause, etc.)
+                    updatedAt: new Date() // Add updatedAt timestamp
+                };
+
+                const updateResult = await db.collection("tasks").updateOne(
+                    { task_id: task_id, user_id: Number(user_id) }, // Match by user_id and task_id
+                    { $set: updatedData }
                 );
 
-                if (result.matchedCount === 0) {
-                    res.status(404).json({ message: "Task not found" });
+                if (updateResult.matchedCount === 0) {
+                    res.status(404).json({ message: "Task not found or does not belong to the user." });
                 } else {
-                    res.status(200).json({ message: "Task updated successfully" });
+                    res.status(200).json({ message: "Task updated successfully", updatedData });
                 }
                 break;
 
