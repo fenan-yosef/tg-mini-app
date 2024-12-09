@@ -3,6 +3,7 @@
 import { faArrowDown, faBell, faFire, faHourglass2, faPlay, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useMemo, useState } from 'react';
 
 // Dynamic import for FontAwesomeIcon
@@ -15,7 +16,12 @@ const getGreeting = () => {
 };
 
 const Home = () => {
-  5
+  const router = useRouter();
+
+  const handleTaskClick = (taskId) => {
+    router.push(`/timer/${taskId}`); // Navigate to the task details page
+  };
+
   const [username, setUsername] = useState('');
   const [photoUrl, setPhotoUrl] = useState('');
   const [tasks, setTasks] = useState([]);
@@ -42,7 +48,7 @@ const Home = () => {
 
   const fetchTasks = async (user_id) => {
     try {
-      const response = await fetch(`/api/task/${user_id}`);
+      const response = await fetch(`/api/tasks/${user_id}`);
       if (response.ok) {
         const data = await response.json();
         setTasks(data);
@@ -96,7 +102,7 @@ const Home = () => {
             <div className="flex justify-between pt-7 pb-2">
               <p className="text-sm my-2">{task.leftHours}hr</p>
               <button className="play-button text-yellow-300 mt-2">
-                <FontAwesomeIcon icon={faPlay} />
+                <FontAwesomeIcon icon={faPlay} onClick={() => { handleTaskClick(task.task_id) }} />
               </button>
             </div>
             <p className="text-xs text-gray-300">

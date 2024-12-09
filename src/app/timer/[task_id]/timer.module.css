@@ -5,6 +5,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 *{
   --yellow: #e0f569;
+  --new-yellow: #b3f557;
   --blue: #4f8fe7;
 }
 /* Custom styles (optional) */
@@ -24,16 +25,15 @@ body {
 }
 
 .yellow-text{
-  color: #e0f569;
+  color: #b3f557;
 }
-
 
 .yellow-border{
   border-color: #e0f569;
 }
 
 .yellow-bg{
-  background-color: var(--yellow);
+  background-color: var(--new-yellow);
 }
 
 .blue-bg{
@@ -45,7 +45,7 @@ body {
 }
 
 .pink-bg{
-  background-color: #e592e5;
+  background-color: #f379f3;
 }
 
 .liquid-marble-bg{
