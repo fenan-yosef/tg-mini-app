@@ -13,7 +13,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useParams, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function TaskDetails() {
     const { task_id } = useParams();
@@ -81,9 +81,10 @@ export default function TaskDetails() {
         setIntervalId(id);
     };
 
-    const pauseTimer = () => {
+    const pauseTimer = async () => {
         clearInterval(intervalId);
         setIsRunning(false);
+        await updateTaskTime(timeLeft / 3600);
     };
 
     const stopTimer = async () => {
@@ -97,9 +98,14 @@ export default function TaskDetails() {
         await updateTaskTime(task?.estimatedHours || 0);
     };
 
+    const capitalizeFirstLetter = React.useCallback((str) => {
+        if (!str) return '';
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }, []);
+
     const updateTaskTime = async (updatedTime) => {
         try {
-            await fetch(`/api/task/${task?.user_id}`, {
+            await fetch(`/api/tasks/${task?.user_id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -129,6 +135,15 @@ export default function TaskDetails() {
         );
     }
 
+    const progress = Math.min(
+        Math.max(
+            ((task.estimatedHours * 3600 - timeLeft) / (task.estimatedHours * 3600)) * 100,
+            0
+        ),
+        100
+    );
+
+
     return (
         <div className="min-h-screen bg-blue-bg text-white">
             <button
@@ -147,7 +162,7 @@ export default function TaskDetails() {
                     />
                     <p>{task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}</p>
                 </div>
-                <h1 className="text-2xl font-bold my-4">{task.title}</h1>
+                <h1 className="text-2xl font-bold my-4">{capitalizeFirstLetter(task.title)}</h1>
                 <div className="mb-4">
                     <p className="text-gray-400">
                         <FontAwesomeIcon icon={faCalendarDay} className="mr-2" />
@@ -157,10 +172,40 @@ export default function TaskDetails() {
                 </div>
             </div>
 
+            {/* Description */}
             <div className="p-4 relative -top-6">
                 <h4 className="mb-3">Description</h4>
                 <p className="mb-4 text-gray-300 text-sm font-extralight">{task.description}</p>
             </div>
+
+            {/* Progress Bar */}
+            <div className="mt-4">
+                <p className="text-gray-300 mb-2 text-sm font-light">
+                    Progress: {Math.floor(progress)}%
+                </p>
+                <div className="relative w-full bg-gray-300 rounded-full h-3 overflow-hidden">
+                    {/* Filling part */}
+                    <div
+                        className="yellow-bg h-3 rounded-full transition-all"
+                        style={{
+                            width: `${progress}%`,
+                        }}
+                    ></div>
+
+                    {/* Circle at the tip */}
+                    <div
+                        className="absolute top-1/2 transform -translate-y-1/2 bg-yellow-bg border-2 border-white rounded-full z-20"
+                        style={{
+                            left: `${progress}%`,
+                            width: '24px', // Make it larger
+                            height: '24px', // Match width
+                            marginLeft: progress === 100 ? '-12px' : '-12px', // Adjust alignment for larger circle
+                        }}
+                    ></div>
+                </div>
+            </div>
+
+
 
             <div className="absolute fixed bottom-20 w-full yellow-bg rounded-xl text-black">
                 <div className="text-center p-4 rounded-lg flex align-middle text-gray-600">
@@ -172,19 +217,19 @@ export default function TaskDetails() {
                     <div>
                         <button
                             onClick={startTimer}
-                            className="yellow-bg text-black px-4 py-2 rounded-lg font-bold mx-1"
+                            className="yellow-bg text-black px-4 py-2 rounded-lg font-bold mx-1 shadow-md shadow-black"
                         >
                             <FontAwesomeIcon icon={faPlay} size="2x" />
                         </button>
                         <button
                             onClick={pauseTimer}
-                            className="yellow-bg text-black px-4 py-2 rounded-lg font-bold mx-1"
+                            className="yellow-bg text-black px-4 py-2 rounded-lg font-bold mx-1 shadow-md shadow-black"
                         >
                             <FontAwesomeIcon icon={faPause} size="2x" />
                         </button>
                         <button
                             onClick={stopTimer}
-                            className="yellow-bg text-black px-4 py-2 rounded-lg font-bold mx-1"
+                            className="yellow-bg text-black px-4 py-2 rounded-lg font-bold mx-1 shadow-md shadow-black"
                         >
                             <FontAwesomeIcon icon={faStop} size="2x" />
                         </button>

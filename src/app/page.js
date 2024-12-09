@@ -100,7 +100,7 @@ const Home = () => {
             <h4 className="font-bold my-2">{capitalizeFirstLetter(task.title)}</h4>
             <p className="text-sm my-2">{capitalizeFirstLetter(task.description)}</p>
             <div className="flex justify-between pt-7 pb-2">
-              <p className="text-sm my-2">{task.leftHours}hr</p>
+              <p className="text-sm my-2">{parseInt(task.leftHours).toFixed(2)}hr</p>
               <button className="play-button text-yellow-300 mt-2">
                 <FontAwesomeIcon icon={faPlay} onClick={() => { handleTaskClick(task.task_id) }} />
               </button>
@@ -138,7 +138,7 @@ const Home = () => {
       style={{
         textAlign: 'center',
         marginTop: '-5px',
-        marginBottom: '130px',
+        marginBottom: '100px',
         minHeight: '100vh',
       }}
     >
