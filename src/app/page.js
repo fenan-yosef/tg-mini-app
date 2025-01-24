@@ -145,9 +145,9 @@ const Home = () => {
       <div className="header flex justify-between items-center p-4">
         <div className="flex">
           <Image
-            src={photoUrl}
+            src={"/images/placeholder-profile.jpg"}
             alt="User Avatar"
-            className="pl-3 w-10 h-10 rounded-md mx-1 mr-3 border-red-600 border-2"
+            className="w-10 h-10 rounded-md mx-1 mr-3 border-white border-2"
             width={40}
             height={40}
             priority
