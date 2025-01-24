@@ -147,7 +147,7 @@ const Home = () => {
           <Image
             src={photoUrl}
             alt="User Avatar"
-            className="pl-3 w-10 h-10 rounded-md mx-1 mr-3"
+            className="pl-3 w-10 h-10 rounded-md mx-1 mr-3 border-red-600 border-2"
             width={40}
             height={40}
             priority
