@@ -1,6 +1,6 @@
 'use client'; // Required for client-side logic
 
-import { faArrowDown, faBell, faFire, faHourglass2, faPlay, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faBell, faFire, faHourglass2, faPlay, faSpinner, faTrash } from '@fortawesome/free-solid-svg-icons';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -105,9 +105,13 @@ const Home = () => {
                 <FontAwesomeIcon icon={faPlay} onClick={() => { handleTaskClick(task.task_id) }} />
               </button>
             </div>
-            <p className="text-xs text-gray-300">
-              Due: {new Date(task.dueDate).toLocaleDateString()}
-            </p>
+            <div className='flex justify-between items-center'>
+              <FontAwesomeIcon icon={faTrash} className="" />
+              <p className="text-xs text-gray-300 text-end">
+                Due: {new Date(task.dueDate).toLocaleDateString()}
+              </p>
+            </div>
+
           </div>
         ))
       ) : (
@@ -145,7 +149,7 @@ const Home = () => {
       <div className="header flex justify-between items-center p-4">
         <div className="flex">
           <Image
-            src={"/images/placeholder-profile.jpg"}
+            src={photoUrl}
             alt="User Avatar"
             className="w-10 h-10 rounded-md mx-1 mr-3 border-white border-2"
             width={40}
